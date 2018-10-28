@@ -10,9 +10,10 @@ package passwordmanager;
  * @author Matthew
  */
 public class data {
-    public String appName;
-    public String email;
-    public String username;
-    public String password;
-    public String otherInfo;
+    public String appName = null;
+    public String email = null;
+    public String username = null;
+    public String password = null;
+    public String otherInfo = null;
+    char[] encyptPassword = null;
 }

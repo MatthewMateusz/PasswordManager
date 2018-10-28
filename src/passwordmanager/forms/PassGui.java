@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package passwordmanager;
+package passwordmanager.forms;
 
 /**
  *
@@ -36,9 +36,11 @@ public class PassGui extends javax.swing.JFrame {
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
+        closeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Enter Password");
+        setAlwaysOnTop(true);
         setResizable(false);
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
         layout.columnWidths = new int[] {0, 5, 0, 5, 0, 5, 0};
@@ -59,10 +61,14 @@ public class PassGui extends javax.swing.JFrame {
         getContentPane().add(passField, gridBagConstraints);
 
         acceptButton.setText("Accept");
+        acceptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acceptButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 3;
         getContentPane().add(acceptButton, gridBagConstraints);
 
         infoField.setEditable(false);
@@ -91,8 +97,27 @@ public class PassGui extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         getContentPane().add(filler4, gridBagConstraints);
 
+        closeButton.setText("Close");
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 4;
+        getContentPane().add(closeButton, gridBagConstraints);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_closeButtonActionPerformed
+
+    private void acceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptButtonActionPerformed
+        
+    }//GEN-LAST:event_acceptButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,9 +153,12 @@ public class PassGui extends javax.swing.JFrame {
             }
         });
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton acceptButton;
+    private javax.swing.JButton closeButton;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
@@ -139,4 +167,7 @@ public class PassGui extends javax.swing.JFrame {
     private javax.swing.JPasswordField passField;
     private javax.swing.JLabel passLabel;
     // End of variables declaration//GEN-END:variables
+
+    
+    
 }
