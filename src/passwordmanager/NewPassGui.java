@@ -190,7 +190,7 @@ public class NewPassGui extends javax.swing.JFrame {
         char[] fPass = null;
         this.setVisible(true);
         
-        this.acceptButtonActionPerformed();
+        
         this.setVisible(false);
         return fPass;
     }
