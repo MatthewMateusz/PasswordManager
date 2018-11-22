@@ -6,18 +6,21 @@
 package passwordmanager.guis;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
+import java.security.InvalidKeyException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.table.DefaultTableModel;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import passwordmanager.PasswordManager;
+import passwordmanager.crypt.Cryption;
+import passwordmanager.crypt.CryptoException;
+import passwordmanager.data;
 
 /**
  *
@@ -89,13 +92,6 @@ public class MainGui extends javax.swing.JFrame {
         PassTable.getTableHeader().setReorderingAllowed(false);
         TableScrollPane.setViewportView(PassTable);
         PassTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        if (PassTable.getColumnModel().getColumnCount() > 0) {
-            PassTable.getColumnModel().getColumn(0).setHeaderValue("App Name");
-            PassTable.getColumnModel().getColumn(1).setHeaderValue("Email");
-            PassTable.getColumnModel().getColumn(2).setHeaderValue("Username");
-            PassTable.getColumnModel().getColumn(3).setHeaderValue("Password");
-            PassTable.getColumnModel().getColumn(4).setHeaderValue("Other Information");
-        }
 
         getContentPane().add(TableScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -193,12 +189,14 @@ public class MainGui extends javax.swing.JFrame {
     }//GEN-LAST:event_EditPassActionPerformed
 
     private void RemovePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemovePassActionPerformed
-        int selected = PassTable.getSelectedRow();
         DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
+        int selected = PassTable.getSelectedRow();
+        System.out.print(selected);
         model.removeRow(selected);
     }//GEN-LAST:event_RemovePassActionPerformed
 
     private void SavePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SavePassActionPerformed
+        File tempHold = new File("tempxe.json");
         DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
         JSONObject saveData = new JSONObject();
         for (int i=0 ; i < model.getRowCount(); i++) {
@@ -213,13 +211,20 @@ public class MainGui extends javax.swing.JFrame {
         }
         BufferedWriter writer;
         try {
-            writer = new BufferedWriter(new FileWriter(main.passwordFile));
+            writer = new BufferedWriter(new FileWriter(tempHold));
             writer.write(saveData.toString());
             writer.flush();
             writer.close();
         }
         catch (IOException ex){
         }
+        try{
+            Cryption.encrypt(PasswordManager.passcode, tempHold, PasswordManager.passwordFile);
+        } catch (CryptoException | InvalidKeyException ex) {
+            
+        }
+        
+        
         
         
     }//GEN-LAST:event_SavePassActionPerformed
@@ -260,16 +265,16 @@ public class MainGui extends javax.swing.JFrame {
     }
     
     public void loadData() {
-        String columnData[] = new String[5];
         DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
         JSONParser parser = new JSONParser();
+        
         try (FileReader reader = new FileReader(PasswordManager.passwordFile)) {
             Object obj = parser.parse(reader);
             JSONObject data = (JSONObject) obj;
             System.out.println(data.size());
             for (int i = 0 ; i < data.size(); i++) {
-                JSONArray rowData= (JSONArray) data.get(i);
-                System.out.println(rowData.size());
+                JSONObject rowData= (JSONObject)(data.get(Integer.toString(i))) ;
+                model.addRow(new Object[]{rowData.get("0"), rowData.get("1"), rowData.get("2"), rowData.get("3"), rowData.get("4")});
             }
             
         } catch (IOException | ParseException ex) {

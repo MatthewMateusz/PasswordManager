@@ -47,13 +47,15 @@ public class Cryption {
              FileInputStream inputStream = new FileInputStream(inputFile);
              byte[] inputBytes = new byte[(int) inputFile.length()];
              inputStream.read(inputBytes);
+             inputStream.close();
+             System.out.println(Arrays.toString(inputBytes));
              
              byte[] outputBytes = cipher.doFinal(inputBytes);
              
              FileOutputStream outputStream = new FileOutputStream(outputFile);
              outputStream.write(outputBytes);
              
-             inputStream.close();
+             
              outputStream.close();
 
          } catch (InvalidKeyException ex) {

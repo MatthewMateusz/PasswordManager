@@ -20,6 +20,7 @@ import passwordmanager.guis.EnterPass;
  */
 public class PasswordManager {
     public static File passwordFile;
+    public static char[] passcode;
 
     /**
      * @param args the command line arguments
@@ -48,9 +49,8 @@ public class PasswordManager {
                     options[1]);
             
             if (r == 0) {
-                char[] tempPass = newPass.newPass();
-                data.encyptPassword = tempPass;
-                tempPass = null;
+                passcode = newPass.newPass();
+                passcode = null;
                 passwordFile.createNewFile();
             }
             else{
