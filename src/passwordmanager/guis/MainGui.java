@@ -5,7 +5,19 @@
  */
 package passwordmanager.guis;
 
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.swing.table.DefaultTableModel;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import passwordmanager.PasswordManager;
 
 /**
  *
@@ -14,12 +26,15 @@ import javax.swing.table.DefaultTableModel;
 public class MainGui extends javax.swing.JFrame {
 
     EditorGui editGui = new EditorGui(this);
+    PasswordManager main = new PasswordManager();
+    
     
     /**
      * Creates new form MainGui
      */
     public MainGui() {
         initComponents();
+        
     }
 
     /**
@@ -101,12 +116,22 @@ public class MainGui extends javax.swing.JFrame {
         ButtonPannel.add(AddPass, gridBagConstraints);
 
         RemovePass.setText("Remove");
+        RemovePass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RemovePassActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
         ButtonPannel.add(RemovePass, gridBagConstraints);
 
         SavePass.setText("Save");
+        SavePass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SavePassActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 0;
@@ -148,9 +173,8 @@ public class MainGui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPassActionPerformed
-        
-        String[] newItem = editGui.addNew();
         DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
+        String[] newItem = editGui.addNew();
         model.addRow(new Object[]{newItem[0], newItem[1], newItem[2], newItem[3], newItem[4]});
         
         
@@ -158,10 +182,47 @@ public class MainGui extends javax.swing.JFrame {
 
     private void EditPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditPassActionPerformed
         int selected = PassTable.getSelectedRow();
-        DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
-        editGui.Edit((String)model.getValueAt(selected, 0), (String)model.getValueAt(selected, 1), (String)model.getValueAt(selected, 2), (String)model.getValueAt(selected, 3), (String)model.getValueAt(selected, 4));
+      DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
+        String[] values = editGui.Edit((String)model.getValueAt(selected, 0), (String)model.getValueAt(selected, 1), (String)model.getValueAt(selected, 2), (String)model.getValueAt(selected, 3), (String)model.getValueAt(selected, 4));
+        model.setValueAt((Object)values[0], selected, 0);
+        model.setValueAt((Object)values[1], selected, 1);
+        model.setValueAt((Object)values[2], selected, 2);
+        model.setValueAt((Object)values[3], selected, 3);
+        model.setValueAt((Object)values[4], selected, 4);
         
     }//GEN-LAST:event_EditPassActionPerformed
+
+    private void RemovePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemovePassActionPerformed
+        int selected = PassTable.getSelectedRow();
+        DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
+        model.removeRow(selected);
+    }//GEN-LAST:event_RemovePassActionPerformed
+
+    private void SavePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SavePassActionPerformed
+        DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
+        JSONObject saveData = new JSONObject();
+        for (int i=0 ; i < model.getRowCount(); i++) {
+            Map rowData = new LinkedHashMap(5);
+            rowData.put(0, model.getValueAt(i, 0));
+            rowData.put(1, model.getValueAt(i, 1));
+            rowData.put(2, model.getValueAt(i, 2));
+            rowData.put(3, model.getValueAt(i, 3));
+            rowData.put(4, model.getValueAt(i, 4));
+            saveData.put(Integer.toString(i), rowData);
+            System.out.println(i);
+        }
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(main.passwordFile));
+            writer.write(saveData.toString());
+            writer.flush();
+            writer.close();
+        }
+        catch (IOException ex){
+        }
+        
+        
+    }//GEN-LAST:event_SavePassActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,6 +257,25 @@ public class MainGui extends javax.swing.JFrame {
                 new MainGui().setVisible(true);
             }
         });
+    }
+    
+    public void loadData() {
+        String columnData[] = new String[5];
+        DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader(PasswordManager.passwordFile)) {
+            Object obj = parser.parse(reader);
+            JSONObject data = (JSONObject) obj;
+            System.out.println(data.size());
+            for (int i = 0 ; i < data.size(); i++) {
+                JSONArray rowData= (JSONArray) data.get(i);
+                System.out.println(rowData.size());
+            }
+            
+        } catch (IOException | ParseException ex) {
+            
+        }
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

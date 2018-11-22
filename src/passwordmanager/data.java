@@ -5,6 +5,8 @@
  */
 package passwordmanager;
 
+import java.io.File;
+
 /**
  *
  * @author Matthew
@@ -16,4 +18,5 @@ public class data {
     public String password = null;
     public String otherInfo = null;
     char[] encyptPassword = null;
+    public File theFile;
 }

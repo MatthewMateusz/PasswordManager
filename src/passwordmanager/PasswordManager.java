@@ -19,6 +19,7 @@ import passwordmanager.guis.EnterPass;
  * @author Matthew
  */
 public class PasswordManager {
+    public static File passwordFile;
 
     /**
      * @param args the command line arguments
@@ -32,8 +33,8 @@ public class PasswordManager {
         //Todo: Check for encrypted password file.
         // If there is decrypt and read.
         // If there is not promt if they want to create a new one.
+        passwordFile = new File("data.epf");
         passwordGui.setVisible(true);
-        File passwordFile = new File("data.epf");
         if (!passwordFile.exists() && !passwordFile.isDirectory()) {
             Object[] options = {"Yes", "No"};
             int r = JOptionPane.showOptionDialog(
@@ -56,21 +57,24 @@ public class PasswordManager {
                 System.exit(0);
             }
         } else {
-            boolean fileDecrypted = false;
-            data.encyptPassword = enterPass.getPass(" ");
-            while (!fileDecrypted) {
-                try {
-                    Cryption.decrypt(data.encyptPassword, passwordFile, passwordFile);
-                } catch (InvalidKeyException ex) {
-                    data.encyptPassword = enterPass.getPass("Wrong Password Inputted");
-                }
-                catch (CryptoException ex) {
-              
-                }
-            }
+//            boolean fileDecrypted = false;
+//            data.encyptPassword = enterPass.getPass(" ");
+//            while (!fileDecrypted) {
+//                try {
+//                    Cryption.decrypt(data.encyptPassword, passwordFile, passwordFile);
+//                } catch (InvalidKeyException ex) {
+//                    data.encyptPassword = enterPass.getPass("Wrong Password Inputted");
+//                }
+//                catch (CryptoException ex) {
+//              
+//                }
+//            }
+            passwordGui.loadData();
             
             
-        }            
+        }
+        
+        
     }
     
 }
