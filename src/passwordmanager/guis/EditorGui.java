@@ -5,16 +5,26 @@
  */
 package passwordmanager.guis;
 
+import java.awt.Frame;
+
 /**
  *
  * @author Matthew
  */
-public class EditorGui extends javax.swing.JFrame {
+public class EditorGui extends javax.swing.JDialog {
+    String appName;
+    String email;
+    String username;
+    String password;
+    String info;
+    
 
     /**
      * Creates new form AddGui
+     * @param parent
      */
-    public EditorGui() {
+    public EditorGui(Frame parent) {
+        super(parent, "Editor", true);
         initComponents();
     }
 
@@ -46,7 +56,7 @@ public class EditorGui extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Password Editor");
         setAlwaysOnTop(true);
         setResizable(false);
@@ -90,7 +100,7 @@ public class EditorGui extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(InfoLabel, gridBagConstraints);
 
-        AppNameInput.setPreferredSize(new java.awt.Dimension(150, 20));
+        AppNameInput.setPreferredSize(new java.awt.Dimension(200, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
@@ -98,21 +108,21 @@ public class EditorGui extends javax.swing.JFrame {
         getContentPane().add(AppNameInput, gridBagConstraints);
 
         EmailInput.setMinimumSize(new java.awt.Dimension(150, 20));
-        EmailInput.setPreferredSize(new java.awt.Dimension(150, 20));
+        EmailInput.setPreferredSize(new java.awt.Dimension(200, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(EmailInput, gridBagConstraints);
 
-        UsernameInput.setPreferredSize(new java.awt.Dimension(150, 20));
+        UsernameInput.setPreferredSize(new java.awt.Dimension(200, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(UsernameInput, gridBagConstraints);
 
-        PasswordInput.setPreferredSize(new java.awt.Dimension(150, 20));
+        PasswordInput.setPreferredSize(new java.awt.Dimension(200, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 8;
@@ -152,12 +162,22 @@ public class EditorGui extends javax.swing.JFrame {
         getContentPane().add(filler4, gridBagConstraints);
 
         jButton1.setText("Accept");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 14;
         getContentPane().add(jButton1, gridBagConstraints);
 
         jButton2.setText("Decline");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 14;
@@ -165,6 +185,19 @@ public class EditorGui extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        appName = AppNameInput.getText();
+        email = EmailInput.getText();
+        username = UsernameInput.getText();
+        password = PasswordInput.getText();
+        info = InfoInput.getText();
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -197,10 +230,43 @@ public class EditorGui extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditorGui().setVisible(true);
             }
         });
     }
+    
+    
+    public String[] addNew() {
+        String[] output = new String[5];
+        this.setVisible(true);
+        
+        output[0] = appName;
+        output[1] = email;
+        output[2] = username;
+        output[3] = password;
+        output[4] = info;
+        
+        return output;
+    }
+    
+    public String[] Edit(String AppName, String Email, String Username, String Password, String Info){
+        String[] output = new String[5];
+        AppNameInput.setText(AppName);
+        EmailInput.setText(Email);
+        UsernameInput.setText(Username);
+        PasswordInput.setText(Password);
+        InfoInput.setText(Info);
+        this.setVisible(true);
+        
+        output[0] = appName;
+        output[1] = email;
+        output[2] = username;
+        output[3] = password;
+        output[4] = info;
+        
+        return output;
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AppLabel;

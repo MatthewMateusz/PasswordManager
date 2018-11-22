@@ -5,12 +5,16 @@
  */
 package passwordmanager.guis;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Matthew
  */
 public class MainGui extends javax.swing.JFrame {
 
+    EditorGui editGui = new EditorGui(this);
+    
     /**
      * Creates new form MainGui
      */
@@ -70,6 +74,13 @@ public class MainGui extends javax.swing.JFrame {
         PassTable.getTableHeader().setReorderingAllowed(false);
         TableScrollPane.setViewportView(PassTable);
         PassTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (PassTable.getColumnModel().getColumnCount() > 0) {
+            PassTable.getColumnModel().getColumn(0).setHeaderValue("App Name");
+            PassTable.getColumnModel().getColumn(1).setHeaderValue("Email");
+            PassTable.getColumnModel().getColumn(2).setHeaderValue("Username");
+            PassTable.getColumnModel().getColumn(3).setHeaderValue("Password");
+            PassTable.getColumnModel().getColumn(4).setHeaderValue("Other Information");
+        }
 
         getContentPane().add(TableScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -79,6 +90,11 @@ public class MainGui extends javax.swing.JFrame {
         ButtonPannel.setLayout(jPanel2Layout);
 
         AddPass.setText("Add");
+        AddPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddPassActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -97,6 +113,11 @@ public class MainGui extends javax.swing.JFrame {
         ButtonPannel.add(SavePass, gridBagConstraints);
 
         EditPass.setText("Edit");
+        EditPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditPassActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -125,6 +146,22 @@ public class MainGui extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void AddPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPassActionPerformed
+        
+        String[] newItem = editGui.addNew();
+        DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
+        model.addRow(new Object[]{newItem[0], newItem[1], newItem[2], newItem[3], newItem[4]});
+        
+        
+    }//GEN-LAST:event_AddPassActionPerformed
+
+    private void EditPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditPassActionPerformed
+        int selected = PassTable.getSelectedRow();
+        DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
+        editGui.Edit((String)model.getValueAt(selected, 0), (String)model.getValueAt(selected, 1), (String)model.getValueAt(selected, 2), (String)model.getValueAt(selected, 3), (String)model.getValueAt(selected, 4));
+        
+    }//GEN-LAST:event_EditPassActionPerformed
 
     /**
      * @param args the command line arguments

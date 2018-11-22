@@ -42,12 +42,14 @@ public class EnterPass extends javax.swing.JDialog {
         passwordField = new javax.swing.JPasswordField();
         labelReason = new javax.swing.JLabel();
         exit = new javax.swing.JButton();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
-        layout.columnWidths = new int[] {0, 5, 0, 5, 0, 5, 0};
-        layout.rowHeights = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
-        getContentPane().setLayout(layout);
+        setResizable(false);
+        java.awt.GridBagLayout layout1 = new java.awt.GridBagLayout();
+        layout1.columnWidths = new int[] {0, 5, 0, 5, 0, 5, 0};
+        layout1.rowHeights = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0};
+        getContentPane().setLayout(layout1);
 
         Label.setText("Password:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -68,11 +70,11 @@ public class EnterPass extends javax.swing.JDialog {
         getContentPane().add(Continue, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 4;
         getContentPane().add(filler1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 0;
         getContentPane().add(filler2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -106,6 +108,10 @@ public class EnterPass extends javax.swing.JDialog {
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 6;
         getContentPane().add(exit, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 8;
+        getContentPane().add(filler5, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -171,6 +177,7 @@ public class EnterPass extends javax.swing.JDialog {
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
     private javax.swing.JLabel labelReason;
     private javax.swing.JPasswordField passwordField;
     // End of variables declaration//GEN-END:variables
