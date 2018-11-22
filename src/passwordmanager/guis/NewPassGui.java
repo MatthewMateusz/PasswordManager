@@ -3,20 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package passwordmanager;
+package passwordmanager.guis;
+
+import java.awt.Frame;
+import java.util.Arrays;
+import passwordmanager.data;
 
 /**
  *
  * @author Matthew
  */
-public class NewPassGui extends javax.swing.JFrame {
+public class NewPassGui extends javax.swing.JDialog {
+    char[] fPass;
     data data = new data();
-    boolean gotPass = false;
 
     /**
      * Creates new form NewPassGui
+     * @param parent
      */
-    public NewPassGui() {
+    public NewPassGui(Frame parent) {
+        super(parent,"Enter Password", true);
         initComponents();
     }
 
@@ -36,20 +42,21 @@ public class NewPassGui extends javax.swing.JFrame {
         passAgainField = new javax.swing.JPasswordField();
         acceptButton = new javax.swing.JButton();
         infoField = new javax.swing.JTextField();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
-        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
-        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
         closeButton = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("New Password");
         setAlwaysOnTop(true);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
-        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
-        layout.columnWidths = new int[] {0, 5, 0, 5, 0, 5, 0};
-        layout.rowHeights = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
-        getContentPane().setLayout(layout);
+        java.awt.GridBagLayout layout1 = new java.awt.GridBagLayout();
+        layout1.columnWidths = new int[] {0, 5, 0, 5, 0, 5, 0};
+        layout1.rowHeights = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
+        getContentPane().setLayout(layout1);
 
         passLabel.setText("Password:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -69,14 +76,14 @@ public class NewPassGui extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(passField, gridBagConstraints);
 
         passAgainField.setPreferredSize(new java.awt.Dimension(120, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(passAgainField, gridBagConstraints);
 
         acceptButton.setText("Accept");
@@ -100,22 +107,6 @@ public class NewPassGui extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(infoField, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
-        getContentPane().add(filler1, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 10;
-        getContentPane().add(filler2, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        getContentPane().add(filler3, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 4;
-        getContentPane().add(filler4, gridBagConstraints);
 
         closeButton.setText("Close");
         closeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -127,6 +118,22 @@ public class NewPassGui extends javax.swing.JFrame {
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 6;
         getContentPane().add(closeButton, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        getContentPane().add(filler1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 4;
+        getContentPane().add(filler2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(filler3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 10;
+        getContentPane().add(filler4, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -135,9 +142,10 @@ public class NewPassGui extends javax.swing.JFrame {
         char[] pass1 = passField.getPassword();
         char[] pass2 = passAgainField.getPassword();
         
-        if (pass1 == pass2){
-            data.encyptPassword = pass1;
-            gotPass = true;
+        if (Arrays.equals(pass1, pass2)){
+            fPass = pass1;
+            infoField.setText("Match Found");
+            dispose();
             
         } else if(pass1.length == 0) {
             infoField.setText("Enter a password");
@@ -182,16 +190,12 @@ public class NewPassGui extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new NewPassGui().setVisible(true);
+            
         });
     }
     
     public char[] newPass(){
-        char[] fPass = null;
         this.setVisible(true);
-        
-        
-        this.setVisible(false);
         return fPass;
     }
 

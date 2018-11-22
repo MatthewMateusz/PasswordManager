@@ -27,18 +27,18 @@ public class Cryption {
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES";
     
-    public static void encrypt(char[] key, File inputFile, File outputFile) throws CryptoException { 
+    public static void encrypt(char[] key, File inputFile, File outputFile) throws CryptoException, InvalidKeyException { 
         crypt(Cipher.ENCRYPT_MODE, key, inputFile, outputFile);
     }
     
-    public static void decrypt(char[] key, File inputFile, File outputFile) throws CryptoException{
+    public static void decrypt(char[] key, File inputFile, File outputFile) throws CryptoException, InvalidKeyException{
         crypt(Cipher.DECRYPT_MODE, key, inputFile, outputFile);
     }
     
     public static void crypt(int cipherMode, 
             char[] key, 
             File inputFile, 
-            File outputFile) throws CryptoException {
+            File outputFile) throws CryptoException, InvalidKeyException {
          try {
              Key secretKey = new SecretKeySpec(Arrays.toString(key).getBytes(), ALGORITHM);
              Cipher cipher = Cipher.getInstance(TRANSFORMATION);
@@ -56,9 +56,11 @@ public class Cryption {
              inputStream.close();
              outputStream.close();
 
-         } catch (NoSuchPaddingException | 
+         } catch (InvalidKeyException ex) {
+             throw ex;
+         }
+         catch (NoSuchPaddingException | 
                  NoSuchAlgorithmException | 
-                 InvalidKeyException |
                  BadPaddingException |
                  IllegalBlockSizeException |
                  IOException ex) {

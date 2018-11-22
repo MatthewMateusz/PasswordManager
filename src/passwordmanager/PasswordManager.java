@@ -5,9 +5,14 @@
  */
 package passwordmanager;
 
+import passwordmanager.guis.NewPassGui;
+import passwordmanager.guis.MainGui;
 import java.io.File;
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import javax.swing.JOptionPane;
+import passwordmanager.crypt.*;
+import passwordmanager.guis.EnterPass;
 
 /**
  *
@@ -21,7 +26,8 @@ public class PasswordManager {
     public static void main(String[] args) throws IOException {
         data data = new data();
         MainGui passwordGui = new MainGui();
-        NewPassGui newPass = new NewPassGui();
+        NewPassGui newPass = new NewPassGui(passwordGui);
+        EnterPass enterPass = new EnterPass(passwordGui);
         
         //Todo: Check for encrypted password file.
         // If there is decrypt and read.
@@ -42,15 +48,29 @@ public class PasswordManager {
             
             if (r == 0) {
                 char[] tempPass = newPass.newPass();
-                System.out.println(tempPass);
-                //passwordFile.createNewFile();
+                data.encyptPassword = tempPass;
+                tempPass = null;
+                passwordFile.createNewFile();
             }
             else{
                 System.exit(0);
             }
-        }
-        
+        } else {
+            boolean fileDecrypted = false;
+            data.encyptPassword = enterPass.getPass(" ");
+            while (!fileDecrypted) {
+                try {
+                    Cryption.decrypt(data.encyptPassword, passwordFile, passwordFile);
+                } catch (InvalidKeyException ex) {
+                    data.encyptPassword = enterPass.getPass("Wrong Password Inputted");
+                }
+                catch (CryptoException ex) {
+              
+                }
+            }
             
+            
+        }            
     }
     
 }
