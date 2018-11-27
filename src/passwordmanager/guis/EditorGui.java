@@ -195,6 +195,7 @@ public class EditorGui extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        appName = null;
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -241,6 +242,11 @@ public class EditorGui extends javax.swing.JDialog {
         UsernameInput.setText("");
         PasswordInput.setText("");
         InfoInput.setText("");
+        appName = null;
+        email = null;
+        username = null;
+        password = null;
+        info = null;
         this.setVisible(true);
         
         output[0] = appName;

@@ -9,9 +9,7 @@ import passwordmanager.guis.NewPassGui;
 import passwordmanager.guis.MainGui;
 import java.io.File;
 import java.io.IOException;
-import java.security.InvalidKeyException;
 import javax.swing.JOptionPane;
-import passwordmanager.crypt.*;
 import passwordmanager.guis.EnterPass;
 
 /**
@@ -49,8 +47,8 @@ public class PasswordManager {
                     options[1]);
             
             if (r == 0) {
-                passcode = newPass.newPass();
-                passcode = null;
+                //passcode = newPass.newPass();
+                //passcode = null;
                 passwordFile.createNewFile();
             }
             else{

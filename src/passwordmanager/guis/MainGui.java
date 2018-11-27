@@ -6,11 +6,9 @@
 package passwordmanager.guis;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.InvalidKeyException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.table.DefaultTableModel;
@@ -18,9 +16,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import passwordmanager.PasswordManager;
-import passwordmanager.crypt.Cryption;
-import passwordmanager.crypt.CryptoException;
-import passwordmanager.data;
 
 /**
  *
@@ -60,11 +55,13 @@ public class MainGui extends javax.swing.JFrame {
         SearchPannel = new javax.swing.JPanel();
         SearchPass = new javax.swing.JButton();
         SearchPassField = new javax.swing.JTextField();
+        SearchSelect = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Password Manager");
 
         PassTable.setAutoCreateRowSorter(true);
+        PassTable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         PassTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -147,21 +144,27 @@ public class MainGui extends javax.swing.JFrame {
         getContentPane().add(ButtonPannel, java.awt.BorderLayout.PAGE_END);
 
         java.awt.GridBagLayout jPanel4Layout = new java.awt.GridBagLayout();
-        jPanel4Layout.columnWidths = new int[] {0, 5, 0};
+        jPanel4Layout.columnWidths = new int[] {0, 5, 0, 5, 0};
         jPanel4Layout.rowHeights = new int[] {0};
         SearchPannel.setLayout(jPanel4Layout);
 
         SearchPass.setText("Search");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
         SearchPannel.add(SearchPass, gridBagConstraints);
 
         SearchPassField.setPreferredSize(new java.awt.Dimension(200, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         SearchPannel.add(SearchPassField, gridBagConstraints);
+
+        SearchSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "App Name", "Email", "Username", "Password", "Other Information" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        SearchPannel.add(SearchSelect, gridBagConstraints);
 
         getContentPane().add(SearchPannel, java.awt.BorderLayout.PAGE_START);
 
@@ -171,7 +174,10 @@ public class MainGui extends javax.swing.JFrame {
     private void AddPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPassActionPerformed
         DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
         String[] newItem = editGui.addNew();
-        model.addRow(new Object[]{newItem[0], newItem[1], newItem[2], newItem[3], newItem[4]});
+        if (newItem[0] != null) {
+            model.addRow(new Object[]{newItem[0], newItem[1], newItem[2], newItem[3], newItem[4]});
+        }
+        
         
         
     }//GEN-LAST:event_AddPassActionPerformed
@@ -180,11 +186,14 @@ public class MainGui extends javax.swing.JFrame {
         int selected = PassTable.getSelectedRow();
       DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
         String[] values = editGui.Edit((String)model.getValueAt(selected, 0), (String)model.getValueAt(selected, 1), (String)model.getValueAt(selected, 2), (String)model.getValueAt(selected, 3), (String)model.getValueAt(selected, 4));
-        model.setValueAt((Object)values[0], selected, 0);
-        model.setValueAt((Object)values[1], selected, 1);
-        model.setValueAt((Object)values[2], selected, 2);
-        model.setValueAt((Object)values[3], selected, 3);
-        model.setValueAt((Object)values[4], selected, 4);
+        if (values[0] != null) {
+            model.setValueAt((Object)values[0], selected, 0);
+            model.setValueAt((Object)values[1], selected, 1);
+            model.setValueAt((Object)values[2], selected, 2);
+            model.setValueAt((Object)values[3], selected, 3);
+            model.setValueAt((Object)values[4], selected, 4);
+        }
+        
         
     }//GEN-LAST:event_EditPassActionPerformed
 
@@ -196,7 +205,6 @@ public class MainGui extends javax.swing.JFrame {
     }//GEN-LAST:event_RemovePassActionPerformed
 
     private void SavePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SavePassActionPerformed
-        File tempHold = new File("tempxe.json");
         DefaultTableModel model =(DefaultTableModel) PassTable.getModel();
         JSONObject saveData = new JSONObject();
         for (int i=0 ; i < model.getRowCount(); i++) {
@@ -211,16 +219,12 @@ public class MainGui extends javax.swing.JFrame {
         }
         BufferedWriter writer;
         try {
-            writer = new BufferedWriter(new FileWriter(tempHold));
+            writer = new BufferedWriter(new FileWriter(PasswordManager.passwordFile));
             writer.write(saveData.toString());
             writer.flush();
             writer.close();
         }
         catch (IOException ex){
-        }
-        try{
-            Cryption.encrypt(PasswordManager.passcode, tempHold, PasswordManager.passwordFile);
-        } catch (CryptoException | InvalidKeyException ex) {
             
         }
         
@@ -271,14 +275,13 @@ public class MainGui extends javax.swing.JFrame {
         try (FileReader reader = new FileReader(PasswordManager.passwordFile)) {
             Object obj = parser.parse(reader);
             JSONObject data = (JSONObject) obj;
-            System.out.println(data.size());
             for (int i = 0 ; i < data.size(); i++) {
                 JSONObject rowData= (JSONObject)(data.get(Integer.toString(i))) ;
                 model.addRow(new Object[]{rowData.get("0"), rowData.get("1"), rowData.get("2"), rowData.get("3"), rowData.get("4")});
             }
             
         } catch (IOException | ParseException ex) {
-            
+            ex.printStackTrace();
         }
         
     }
@@ -293,6 +296,7 @@ public class MainGui extends javax.swing.JFrame {
     private javax.swing.JPanel SearchPannel;
     private javax.swing.JButton SearchPass;
     private javax.swing.JTextField SearchPassField;
+    private javax.swing.JComboBox<String> SearchSelect;
     private javax.swing.JScrollPane TableScrollPane;
     // End of variables declaration//GEN-END:variables
 }
